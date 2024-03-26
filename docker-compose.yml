@@ -1,0 +1,28 @@
+services:
+  redis:
+    image: bitnami/redis:7.0
+    restart: always
+    ports:
+      - "6379:6379"
+    # volumes:
+    #   - ./redis:/bitnami/redis
+    environment:
+      - REDIS_PASSWORD=passw0rd
+    profiles:
+      - backends
+      - all
+
+  postgres:
+    image: bitnami/postgresql:14
+    restart: always
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - ./postgres:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_PASSWORD=passw0rd
+      - POSTGRESQL_USERNAME=bn_discourse
+      - POSTGRESQL_DATABASE=discourse_db
+    profiles:
+      - backends
+      - all

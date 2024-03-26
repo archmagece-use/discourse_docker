@@ -1,0 +1,50 @@
+templates:
+  - "templates/web.template.yml"
+  - "templates/web.ratelimited.template.yml"
+  - "templates/postgres.template.yml"
+  - "templates/redis.template.yml"
+
+env:
+  LANG: 'en_US.UTF-8'
+
+  DISCOURSE_HOSTNAME: 'discourse.polypia.net'
+
+  DISCOURSE_DB_PORT: 5432
+  DISCOURSE_DB_HOST: localhost
+  DISCOURSE_DB_NAME: discourse_db
+  DISCOURSE_DB_USERNAME: bn_discourse
+  DISCOURSE_DB_PASSWORD: passw0rd
+
+  DISCOURSE_REDIS_DB: 0
+  DISCOURSE_REDIS_HOST: localhost
+  DISCOURSE_REDIS_PASSWORD: passw0rd
+  DISCOURSE_REDIS_PORT: 6379
+  DISCOURSE_REDIS_USE_SSL: false
+
+expose:
+  - "8080:80"
+
+params:
+  version: 0876f262e932da2478ed1d2ec275bd2153001213 # 3.1.0
+
+hooks:
+  after_code:
+    - exec:
+        cd: $home/plugins
+        cmd:
+          - mkdir -p plugins
+          - git clone https://github.com/discourse/docker_manager.git
+          - git clone https://github.com/discourse/discourse-solved.git
+          - git clone https://github.com/discourse/discourse-chat-integration.git
+          - git clone https://github.com/discourse/discourse-signatures.git
+          - git clone https://github.com/discourse/discourse-user-notes.git
+          - git clone https://github.com/discourse/discourse-push-notifications.git
+          - git clone https://github.com/discourse/discourse-fontawesome-pro.git
+#          - git clone https://github.com/discourse/discourse-voting.git
+#          - git clone https://github.com/hitorino/group-invitation.git
+#          - git clone https://github.com/paviliondev/discourse-custom-wizard.git
+#          - git clone https://github.com/merefield/discourse-topic-previews.git -b "theme_sidecar"
+#          - git clone https://github.com/paviliondev/discourse-legal-tools.git
+
+run:
+  - exec: echo "Beginning of custom commands"
